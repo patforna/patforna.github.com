@@ -1,0 +1,23 @@
+---
+layout: post
+title: Comparing Collections Independent of Item Order
+date: 2006-12-12
+comments: false
+---
+
+<h1>{{ page.title }}</h1>
+<div class='post'>
+The other day I was writing some unit tests and wanted to compare two collections in C# independent of the order of the elements. Surprisingly, I couldn't find any suitable implementations, neither in the .NET API nor on the web. I only found one <a href="http://george.tsiokos.com/posts/2004/12/03/collection-equality-regardless-of-item-order/" target="_blank">blog entry</a> that presents a solution to the problem. However, I preferred a simpler approach that would also work with generic collections, so I created a very simple and naive solution.<br /><br />It works with generic collections and uses <a href="http://msdn2.microsoft.com/en-US/library/azhsac5f.aspx" target="_blank">Comparer.Default</a> to determine equality of contained elements. The asymptotic behavior of the method below is quadratic, which is why I previously called it naive.<br /><br />Anyway, I think if you need a simple solution and don't have very stringent performance requirements (e.g. writing unit tests), the code below might help you.<br /><br /><pre>bool Compare&lt;T&gt;(ICollection&lt;T&gt; one, ICollection&lt;T&gt; two) {<br />    if (one == null || two == null) // special case<br />        return one == two;<br /><br />    if (ReferenceEquals(one, two))  // same objects<br />        return true;<br /><br />    if (one.Count != two.Count)<br />        return false;<br /><br />    IList listOne = new List&lt;T&gt;(one);<br />    IList listTwo = new List&lt;T&gt;(two);<br /><br />    // make sure that every object in one is also in two<br />    for (int i = 0; i &lt; listOne.Count; i++) {<br />        object obj = listOne[i];<br />        if (!listTwo.Contains(obj))<br />            return false;<br />        else<br />            listTwo.Remove(obj);<br />    }<br /><br />    return true;<br />}</pre></div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Louis</div>
+<div class='content'>
+if you sort the two lists<br />and compare lexicographically<br />the time is <br />N log(N)</div>
+</div>
+<div class='comment'>
+<div class='author'>Anonymous</div>
+<div class='content'>
+Thanks for this Patric!  I just used it in a Microsoft SharePoint project and it works like a charm.<BR/> Phil</div>
+</div>
+</div>

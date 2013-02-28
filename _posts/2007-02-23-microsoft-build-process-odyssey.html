@@ -1,0 +1,38 @@
+---
+layout: post
+title: Microsoft Build Process Odyssey #@*!
+date: 2007-02-23
+comments: false
+---
+
+<h1>{{ page.title }}</h1>
+<div class='post'>
+Today, I've looked into <a href="http://msdn2.microsoft.com/en-us/library/wea2sca5.aspx" target="_blank">MSBuild</a> for the first time, because I wanted to give my build process a <span style="font-style: italic;">tiny bit</span> more intelligence than what can be achieved with clicking around in Visual Studio. I've been using <a href="http://maven.apache.org/maven-1.x/" target="_blank">maven 1.x</a> (and later <a href="http://maven.apache.org/" target="_blank">maven2</a>) for almost 3 years now for building projects and so I felt a bit like traveling back in time, when I was confronted with the ant-like MSBuild stuff.<br /><br />This alone got me into a bit of a bad mood already, because I've spent hours for what would have taken me minutes with <a href="http://maven.apache.org/" target="_blank">maven</a>. Trying to generate the API docs however gave me the rest. I've heard of a tool called <a href="http://ndoc.sourceforge.net/" target="_blank">NDoc</a> for generating API documentation from the C# source code. I browsed to the NDoc site and frowned when I saw that the "latest" news were more than two years old. Still, I downloaded it and was even more surprised that it asked me to install .NET Framework 1.1 (I'm developing with .NET 3.0!). Patiently, I also took this hurdle. Then, however, *kaboom* NDoc complained that it can't handle the XML Visual Studio 2005 generated. I googled a bit and realized that the latest release of NDoc apparently does not work with .NET Framework 2.0 or later. However, there was a reference on a <a href="http://forums.microsoft.com/MSDN/ShowPost.aspx?PostID=110491&SiteID=1" target="_blank">MSDN forum</a> to a <a href="http://jonas.lagerblad.com/blog/?p=4" target="_blank">blog of a guy</a> that patched (!) the latest NDoc version so that it would <span style="font-style: italic;">kind of run</span> with .NET 2.0 or later.<br /><br />After some tweaking with this patch, I achieved some results. However, it was rather disappointing: Links were broken, Generics are not supported and it just didn't look ok.<br /><br />I don't want to bitch about the authors of NDoc. I think they deserve lots of credit for doing something for the community and nobody can blame them, if they don't have time to continue. However, I think it's quite unbelievable that Microsoft releases .NET SDKs without a documentation tool. I mean not that I like MSDN documentation better than JavaDoc, but we've had tools for creating clean <a href="http://java.sun.com/j2se/javadoc/" target="_blank">JavaDoc</a> for probably more than 10 years now... Oh yeah... I forgot, of course there's one tool called <a href="http://www.doc-o-matic.com/" target="_blank">doc-o-matic</a> that seems to do a decent job creating documentation; provided you don't mind paying the 500 USD license fee...<br /><br />I still feel that i <span style="font-style: italic;">must have</span> overlooked something, because it somehow just doesn't want to get into my head to think that there is no such support. All the Microsoft links in the SDK pointed either to NDoc or to Nirvana (i.e. were broken). Please, correct me if I'm wrong!</div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Patric Fornasier</div>
+<div class='content'>
+Hi James,<BR/><BR/>I'm indeed aware of the /// syntax and used it throughout my code. So I get the intellisense info in Visual Studio and I can also generate the XML file. <BR/><BR/>Maybe you know something more than I do, but I haven't even thought about trying to generate javadoc style pages from that file, because I don't think that it is something you'd do during the lunch break =)<BR/><BR/>As a matter of fact, the Sandcastle and DocProject projects are meant to do exactly that and are apparently used by MS to drive their internal docu generation.<BR/><BR/>A couple of weeks ago I tried them out but gave up after a couple of hours, because they just didn't seem to produce good results 'out of the box', which is what I was looking for...<BR/><BR/>Looking forward to meeting you at the upcoming ACS talk =)<BR/><BR/>Cheers,<BR/>patric</div>
+</div>
+<div class='comment'>
+<div class='author'>James Crisp</div>
+<div class='content'>
+Hi Patric,<BR/><BR/>Assuming you're using Visual Studio  to do your .NET, there is an alternative to the JavaDoc style. Visual Studio supports creating documentation XML as part of the build process. This documentation XML is used to give you the yellow floating intellisense information about classes/methods as you type. To enable this, go to your project properties, then the Build tab, scroll down and then tick 'XML documentation file' and enter a destination path. In your code, you can type /// above a method or class definition, and you'll get standard XML tags put in for summary, params and return value. <BR/><BR/>Personally, I like this approach better than javadoc as you get the information you need as you type. However, glancing at the XML generated by VS, it doesn't look like it would be hard to produce javadoc style pages from it.<BR/><BR/>Hope I'm not repeating stuff you already know!<BR/><BR/>Cheers,<BR/>James<BR/><BR/>PS - Came across your blog thanks to Jim's post about your upcoming talk at ACS. See you there :-)</div>
+</div>
+<div class='comment'>
+<div class='author'>ma2</div>
+<div class='content'>
+heyhey.<BR/>i dont get any of all that:-)pädu, i chume uf neuseeland.may juni bini mit de karina det une.<BR/>no as paar wuche in aussi.<BR/>see u around?<BR/>mäthu</div>
+</div>
+<div class='comment'>
+<div class='author'>Patric Fornasier</div>
+<div class='content'>
+Hey Fritsch! Sieht sehr sielversprechend aus. Werde's mir demnächst gerade mal genauer ansehen. In der Zwischenzeit schon mal thx a lot für den Tip =)<BR/><BR/>Cheers,<BR/>patric</div>
+</div>
+<div class='comment'>
+<div class='author'>mfritschi</div>
+<div class='content'>
+Hey Pädu, ausprobiert hab ichs noch nie, aber vielleicht ist Sandcastle was du suchst?:<BR/><A HREF="http://blogs.msdn.com/sandcastle/" REL="nofollow">Sandcastle</A><BR/><A HREF="http://www.codeplex.com/DocProject" REL="nofollow">DocProject</A><BR/>E Gruess, Mättu</div>
+</div>
+</div>

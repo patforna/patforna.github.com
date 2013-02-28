@@ -1,0 +1,28 @@
+---
+layout: post
+title: JSONP Proxy Server
+date: 2009-03-10
+comments: false
+---
+
+<h1>{{ page.title }}</h1>
+<div class='post'>
+I was doing some JSON mashing the other day and wanted to use data from different web pages. <a href="http://en.wikipedia.org/wiki/XMLHttpRequest">XmlHttpRequest</a> was not an option, because I wanted to <a href="http://en.wikipedia.org/wiki/Cross-site_scripting">fetch content from different domains</a>.<br /><br />As many web pages don't provide an interface that returns <a href="http://bob.pythonmac.org/archives/2005/12/05/remote-json-jsonp/">JSONP</a>, I wrote a very simple proxy server in python that does just that. More specifically, the proxy forwards the incoming request to a hard coded url and returns the result wrapped into a callback function which is provided by the user.<script type="syntaxhighlighter" class="brush: python; gutter: false;"><![CDATA[<br />import urllib,re<br />from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer<br /><br />class RequestHandler(BaseHTTPRequestHandler):<br /><br />    def do_GET(self):<br />        query = re.search('.*(\?.*)', self.path).group(1)<br />        callback = re.search('.*callback=([^&amp;]*)', query).group(1)<br />        queryWithoutCallback = re.sub('[&amp;]?callback=[^&amp;]*', '', query);<br />        url = "http://funky.host.org/foo" + queryWithoutCallback;<br />   <br />        self.send_response(200)<br />        self.send_header('Content-type', 'text/html')<br />        self.end_headers()<br /> <br />        f = urllib.urlopen(url)<br />        response = f.read().strip()<br />        f.close()<br /><br />        self.wfile.write("%s(%s);" % (callback, response))<br />        return<br /><br />def main():<br />    try:<br />        server = HTTPServer(('', 80), RequestHandler)<br />        print '--- Server ready!'<br />        server.serve_forever()<br />    except KeyboardInterrupt:<br />        print '--- Shutting down...'<br />        server.socket.close()<br /><br />if __name__ == '__main__':<br />    main()<br />]]></script><br />Once the proxy is running, you can hit it with <a href="http://http//bob.pythonmac.org/archives/2005/12/05/remote-json-jsonp/">JSONP</a> requests:<script type="syntaxhighlighter" class="brush: javascript; gutter: false;"><![CDATA[<br />var script= document.createElement('script');<br />script.type= 'text/javascript';<br />script.src= 'http://localhost?foo=bar&amp;callback=foobar';<br />document.getElementsByTagName('head')[0].appendChild(script);<br /><br />function foobar(response) {<br />    // do something funky with response<br />}<br />]]></script>Or, if you prefer doing it in <a href="http://jquery.com/">JQuery</a>, which allows you to then handle the callback in a closure:<br /><script type="syntaxhighlighter" class="brush: javascript; gutter: false;"><![CDATA[<br />var url = 'http://localhost?foo=bar&amp;callback=?';<br />$.getJSON(url, function(response) {<br />    // do something funky with response<br />});<br />]]></script></div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Sriram</div>
+<div class='content'>
+nice work. guess you should add a disclaimer that, in general, this technique completely works around the <a href="http://stackoverflow.com/questions/1830050/why-same-origin-policy-for-xmlhttprequest/1830176#1830176" rel="nofollow">well-intended</a> same origin policy. It is risky, especially if you are maintaining authentication tokens (or sessionid) in cookies.</div>
+</div>
+<div class='comment'>
+<div class='author'>toast</div>
+<div class='content'>
+cool, i like it.</div>
+</div>
+<div class='comment'>
+<div class='author'>ymailproxy</div>
+<div class='content'>
+Create your own proxy server. Use free domain from co.cc , so when the firewall has blocking your existing proxy server you can change the domain name with free .<br><br />Try use some free web proxy from co.cc below :<br><br /><br><br /><a href="http://www.bypassmyschool.co.cc" rel="nofollow" rel="nofollow">http://www.bypassmyschool.co.cc</a><br><br /><a href="http://www.killblocker.co.cc" rel="nofollow" rel="nofollow">http://www.killblocker.co.cc</a><br><br /><a href="http://www.proxy2unblock.co.cc" rel="nofollow" rel="nofollow">http://www.proxy2unblock.co.cc</a><br><br /><a href="http://www.surfprofit.co.cc" rel="nofollow" rel="nofollow">http://www.surfprofit.co.cc</a><br><br /><a href="http://www.way2myspace.co.cc" rel="nofollow" rel="nofollow">http://www.way2myspace.co.cc</a><br><br /><a href="http://www.workingproxies.co.cc" rel="nofollow" rel="nofollow">http://www.workingproxies.co.cc</a><br><br /><br /><br><br /><br><br /><br><br />Co.CC is the best free domain for web proxy and other site. You can get free 3 domain from CO.CC for free. Get your free domain and make your own web proxy at <a href="http://www.co.cc/?id=138360" rel="nofollow" rel="nofollow">http://www.co.cc/?id=138360</a><br><br /><br><br />Source(s):<br><br /><a href="http://surf-freedom.blogspot.com" rel="nofollow" rel="nofollow">http://surf-freedom.blogspot.com</a></div>
+</div>
+</div>

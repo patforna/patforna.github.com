@@ -1,0 +1,13 @@
+---
+layout: post
+title: Copying table data between databases in SQL Server
+date: 2009-06-03
+comments: false
+---
+
+<h1>{{ page.title }}</h1>
+<div class='post'>
+bcp MY_SCHEMA..MyTable OUT dump.dat -S <server>\<instance> -U sa -c<br />bcp MY_SCHEMA..MyTable IN dump.dat -c -T<br /><br />For example:<br />bcp MY_SCHEMA..MyTable OUT dump.dat -S 192.168.1.5\foo -U sa -c</div>
+<h2>Comments</h2>
+<div class='comments'>
+</div>

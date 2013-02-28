@@ -1,0 +1,23 @@
+---
+layout: post
+title: Finding Duplicate Table Entries
+date: 2007-11-19
+comments: false
+---
+
+<h1>{{ page.title }}</h1>
+<div class='post'>
+The following piece of SQL is pretty handy for finding duplicate entries in a table. It will return all rows that have a single or aggregate column value which exist more than once in the given table.<br /><br /><span style=";font-family:courier new;font-size:85%;">select column_x, column_y, column_z<br />from my_table<br />group by column_x, column_y, column_z<br />having count (*) > 1;</span></div>
+<h2>Comments</h2>
+<div class='comments'>
+<div class='comment'>
+<div class='author'>Patric Fornasier</div>
+<div class='content'>
+Hi Robert,<BR/><BR/>Good point but unfortunately we live in a world where db schemas are imperfect or migration scripts inject faulty data.<BR/><BR/>Yet there might also be cases where you want to allow duplicate entries in a table. For example, you could have several recursively nested folders with the same name (but different parent folders) in the same table.<BR/><BR/>Cheers,<BR/>patric</div>
+</div>
+<div class='comment'>
+<div class='author'>Anonymous</div>
+<div class='content'>
+Hi,<BR/><BR/>I'm wondering why there are duplicate entries in a proper designed and normalized table..<BR/><BR/>regards,<BR/><BR/>Robert</div>
+</div>
+</div>
