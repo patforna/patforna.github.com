@@ -60,14 +60,24 @@ class Post
   def creation_date
     creation_datetime.strftime("%Y-%m-%d")
   end
+  
+  def permalink
+    "/#{creation_datetime.strftime("%Y/%m")}/#{file_name_without_date}"
+  end
+  
 
   def creation_datetime
     Date.parse(@node.search('published').first.content)
   end
 
-  def file_name
+  def file_name_without_date
     param_name = title.split(/[^a-zA-Z0-9]+/).join('-').downcase
-    %{#{creation_date}-#{param_name}.html}
+    "#{param_name}.html"
+  end
+
+  def file_name
+    
+    %{#{creation_date}-#{file_name_without_date}}
   end
 
   def header
@@ -76,7 +86,8 @@ class Post
       %{layout: post},
       %{title: "#{title}"},
       %{date: #{creation_datetime}},
-      %{tags: #{tags}},      
+      %{tags: #{tags}},  
+      %{permalink: #{permalink}},          
       %{comments: false},
       '---',
       '{% include JB/setup %}'
