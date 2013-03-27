@@ -1,0 +1,12 @@
+---
+uuid: "7484298368006500550"
+title: "WSDL MEP State Machines"
+date: "2006-12-15"
+permalink: "/2006/12/wsdl-mep-state-machines.html"
+description: 
+categories: 
+---
+
+<div class="css-full-post-content js-full-post-content">
+A few days ago I implemented the <a href="http://www.ssdl.org/" target="_blank">SSDL</a> MEP protocol framework in <a href="http://sourceforge.net/projects/soya" target="_blank">Soya</a>. Of the four initial SSDL protocol frameworks, the MEP framework is the simplest and least sophisticated. It has primarily been designed for capturing the <a href="http://www.w3.org/TR/2004/WD-wsdl20-extensions-20040803/#patterns" target="_blank">Message Exchange Patterns</a> defined by WSDL so it can be used as a simple, SOAP-centric language replacement for the latter.<br /><br />After having a closer look at the <a href="http://www.w3.org/TR/2004/WD-wsdl20-extensions-20040803/#patterns" target="_blank">Message Exchange Patterns</a> in the WSDL specification, however, I found that they weren't described in a very intelligible way (despite the fact that they are actually quite simple).<br /><br />To make sure I understood the patterns and in order to document how I implemented them in <a href="http://sourceforge.net/projects/soya" target="_blank">Soya</a>, I drew a state diagram for each pattern. Each state diagram represents one MEP from the perspective of one service.<br /><br />Clicking on the image below will open a high-res image of the state machines for each MEP. Alternatively, you can also download the image as a <a href="http://soya.sourceforge.net/files/mep-states.pdf" target="_blank">PDF document</a> for easier printing.<br /><br /><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_MoEdKdmWnk0/RYH0g49L13I/AAAAAAAAAAc/KZJmvgsqbXA/s1600-h/mep-states.png" target="_blank"><img style="margin: 0px auto 10px; display: block; text-align: center; cursor: pointer;" src="http://2.bp.blogspot.com/_MoEdKdmWnk0/RYH0g49L13I/AAAAAAAAAAc/KZJmvgsqbXA/s200/mep-states.png" alt="" id="BLOGGER_PHOTO_ID_5008553106494707570" border="0" /></a><br /><br />Please let me know if you find any errors in the diagrams, so I can fix them in both <a href="http://sourceforge.net/projects/soya" target="_blank">Soya</a> and the image.
+</div>
