@@ -13,45 +13,24 @@ doc = Nokogiri::XML(data)
 
 def add(node)
   id = node.search('id').first.content
-  type = node.search('category').first.attr('term').split('#').last
+  type = node.search('category').first.attr('term').split('#').last  
   case type
   when 'post'
     @posts[id] = Post.new(node)
-  when 'comment'
-    reply_to = node.children.find {|c| c.name == 'in-reply-to' }
-    post_id = reply_to.attr('ref')
-    #post_id = node.search('thr').first.attr('ref')
-    @posts[post_id].add_comment(Comment.new(node))
   when 'template', 'settings'
   else
-    raise 'dunno '+type
+     # ignore
   end
 end
 
 def write(post)
-  puts "Post [#{post.title}] has #{post.comments.count} comments"
-
   puts "writing #{post.file_name}"
   File.open(File.join('_posts', post.file_name), 'w') do |file|
     file.write post.header
     file.write "\n\n"
-    file.write "<h1>{{ page.title }}</h1>\n"
     file.write "<div class='post'>\n"
     file.write post.content
-    file.write "</div>\n"
-    file.write "<h2>Comments</h2>\n"
-    file.write "<div class='comments'>\n"
-    post.comments.each do |comment|
-      file.write "<div class='comment'>\n"
-      file.write "<div class='author'>"
-      file.write comment.author
-      file.write "</div>\n"
-      file.write "<div class='content'>\n"
-      file.write comment.content
-      file.write "</div>\n"
-      file.write "</div>\n"
-    end
-    file.write "</div>\n"
+    file.write "\n</div>\n"
   end
 end
 
@@ -68,6 +47,10 @@ class Post
 
   def title
     @node.search('title').first.content
+  end
+  
+  def tags
+    @node.xpath('.//ns:category[@scheme="http://www.blogger.com/atom/ns#"]', 'ns' => 'http://www.w3.org/2005/Atom').map{|x| x.attr('term')}
   end
 
   def content
@@ -91,10 +74,12 @@ class Post
     [
       '---',
       %{layout: post},
-      %{title: #{title}},
+      %{title: "#{title}"},
       %{date: #{creation_datetime}},
+      %{tags: #{tags}},      
       %{comments: false},
-      '---'
+      '---',
+      '{% include JB/setup %}'
     ].join("\n")
   end
 end

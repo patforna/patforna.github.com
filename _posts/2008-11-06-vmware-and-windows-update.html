@@ -1,0 +1,12 @@
+---
+layout: post
+title: "VMware and Windows Update"
+date: 2008-11-06
+tags: ["software development"]
+comments: false
+---
+{% include JB/setup %}
+
+<div class='post'>
+For some reason, <a href="http://www.windowsupdate.com">Windows Update</a> doesn't seem to work out of the box in <a href="http://www.vmware.com/">VMware</a>. It took me a while to find <a href="http://stateless.geek.nz/2008/06/01/windows-update-fails/">this</a> so I thought I'll replicate the simple steps I had to take to get it working:<br /><ol><li style="font-family: courier new;">net stop wuauserv</li><li style="font-family: courier new;">regsvr32 %windir%\system32\wups2.dll</li><li style="font-family: courier new;">net start wuauserv</li></ol>
+</div>
