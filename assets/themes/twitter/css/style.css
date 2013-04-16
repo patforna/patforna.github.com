@@ -123,3 +123,13 @@ h1 {
   font-size: 14px;
   font-weight: normal;     
 }
+
+section#about {
+  padding-top: 20px;
+}
+
+/* about */
+section#about .headshot {
+  float:left;
+  margin: -5px 25px 0 -30px;
+}
