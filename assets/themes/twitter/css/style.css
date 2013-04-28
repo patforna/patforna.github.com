@@ -57,6 +57,10 @@ h1 {
   margin: 10px 0;
 }
 
+.post-full li {
+  line-height: 30px;
+}
+
 /* tag_box */
 .tag_box {
   list-style: none;
